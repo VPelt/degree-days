@@ -124,7 +124,10 @@ class DegreeDaysData(update_coordinator.DataUpdateCoordinator):
         """Update the data from the KNMI device."""
         try:
             self.total_consumption_sensor_state = self.hass.states.get(self.total_consumption_sensor)
-            self.total_consumption = float(self.total_consumption_sensor_state.state)
+            if self.total_consumption_sensor_state.state == "unknown":
+              self.total_consumption = "unknown"
+            else:
+              self.total_consumption = float(self.total_consumption_sensor_state.state)
         except AttributeError:
             self.total_consumption = 0
         try:
